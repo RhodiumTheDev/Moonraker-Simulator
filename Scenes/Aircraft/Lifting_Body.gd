@@ -1,3 +1,5 @@
+# TODO: Cange all the arrays sotring face data into an array of object instances
+
 extends MeshInstance
 
 export(float) var AREOFOIL_COEFFICIENT = 0
@@ -53,16 +55,26 @@ func _ready():
 func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 	
 	var sine_average = 0
+	var force_average = Vector3(0,0,0)
 	
-	var count = 0
+	# Get the average sine between the normal directions and the velocity direction
+	# This could possibly be changed to use the dot product in future implementations of the physics engine
+	# However, sign returns from -1 to 1, but a dot product is ~-3 to 1, so this could not work as intended.
 	
 	for i in face_normals:
 		sine_average += sin((Vector3(i) + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
 	
 	sine_average /= face_area.size()
-	print(sine_average)
+#	print(sine_average)
 	
-	return Vector3(0,0,0)
+	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
+	
+	for count in range(0, face_normals.size()):
+		force_average += Vector3(face_normals[count]) + parent_rotation + global_transform.basis.y
+	
+	force_average /= face_normals.size()
+	
+	return force_average * sine_average
 
 func set_debug_mode(mode):
 	DEBUG_MODE = mode
