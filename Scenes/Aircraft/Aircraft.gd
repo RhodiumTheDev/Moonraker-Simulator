@@ -9,7 +9,7 @@ func _ready():
 	# Add all of the Lifting_Bodies to an array
 	for node_path in LIFTING_BODIES:
 		lifting_bodies.append(get_node(node_path))
-		get_node(node_path).set_debug_mode(false)
+		get_node(node_path).set_debug_mode(DEBUG_MODE)
 	
 func _physics_process(delta):
 	for lifting_body in lifting_bodies:

@@ -5,7 +5,7 @@
 [ext_resource path="res://Assets/Materials/wing_shader_material.tres" type="Material" id=3]
 
 [node name="Lifting_Body" type="MeshInstance"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = ExtResource( 2 )
 material/0 = ExtResource( 3 )
 script = ExtResource( 1 )
+DEBUG_MODE = true
