@@ -9,3 +9,5 @@ mesh = ExtResource( 2 )
 material/0 = ExtResource( 3 )
 script = ExtResource( 1 )
 DEBUG_MODE = true
+
+[node name="debug" type="ImmediateGeometry" parent="."]

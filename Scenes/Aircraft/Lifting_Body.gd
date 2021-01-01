@@ -86,6 +86,7 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 	
 	var sine_average = 0
 	var force_average = Vector3(0,0,0)
+	var force = Vector3(0,0,0)
 	
 	# Get the average sine between the normal directions and the velocity direction
 	# This could possibly be changed to use the dot product in future implementations of the physics engine
@@ -102,8 +103,14 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 		force_average += Vector3(i.get_normal()[0]) + parent_rotation + global_transform.basis.y * i.get_area()
 	
 	force_average /= faces.size()
+	force = force_average * sine_average * delta * 100
+	$debug.clear()
+	$debug.begin(Mesh.PRIMITIVE_LINE_STRIP)
+	$debug.add_vertex(Vector3(0,0,0))
+	$debug.add_vertex(force)
+	$debug.end()
 	
-	return force_average * sine_average * delta * 100
+	return force
 
 func set_debug_mode(mode):
 	DEBUG_MODE = mode
