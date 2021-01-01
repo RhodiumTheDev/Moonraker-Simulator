@@ -105,7 +105,7 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 	force_average /= faces.size()
 	force = force_average * sine_average * delta * 100
 	$debug.clear()
-	$debug.begin(Mesh.PRIMITIVE_LINE_STRIP)
+	$debug.begin(Mesh.PRIMITIVE_LINES)
 	$debug.add_vertex(Vector3(0,0,0))
 	$debug.add_vertex(force)
 	$debug.end()
