@@ -91,20 +91,19 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 	# This could possibly be changed to use the dot product in future implementations of the physics engine
 	# However, sign returns from -1 to 1, but a dot product is ~-3 to 1, so this could not work as intended.
 	
-	for i in face_normals:
-		sine_average += sin((Vector3(i) + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
+	for i in faces:
+		sine_average += sin((i.get_normal()[0] + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
 	
-	sine_average /= face_area.size()
+	sine_average /= faces.size()
 #	print(sine_average)
 	
 	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
+	for i in faces:
+		force_average += Vector3(i.get_normal()[0]) + parent_rotation + global_transform.basis.y * i.get_area()
 	
-	for count in range(0, face_normals.size()):
-		force_average += Vector3(face_normals[count]) + parent_rotation + global_transform.basis.y# * face_area
+	force_average /= faces.size()
 	
-	force_average /= face_normals.size()
-	
-	return force_average * sine_average * delta# * total_area
+	return force_average * sine_average * delta * 100
 
 func set_debug_mode(mode):
 	DEBUG_MODE = mode
