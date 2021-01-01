@@ -10,42 +10,72 @@ var mdt = MeshDataTool.new()
 var total_area = 0.00
 var test_mode = false
 
+var faces = []
+
 var face_area = []
 var face_centre = []
 
 var face_normals = []
 
 func _ready():
-	
 	# Figure out the area of the mesh
 	
-	# Get normals
-	for i in range(mesh.get_surface_count()):
-		face_normals = mesh.surface_get_arrays(i)[1]
-	
+	# Iterate through each face, set the normals, face area, and add a face instance to the array of faces
+	var verticies = mesh.get_faces()
 	var face = []
-	for vertex in mesh.get_faces():
-		face.append(vertex)
-		if(face.size() == 3):
-			# Calculate the area of each face
-			var a = Vector3(face[0]).distance_to(Vector3(face[1]))
-#			print(a)
-			var b = Vector3(face[1]).distance_to(Vector3(face[2]))
-#			print(b)
-			var c = Vector3(face[0]).distance_to(Vector3(face[2]))
-#			print(c)
-			
-			var s = (a+b+c)/2
-			
-			face_area.append(sqrt(s*(s-a)*(s-b)*(s-c)))
-			face_centre.append((a+b+c)/2)
-			
-			# Reset face
-			face = []
+	# For every face:
+	for i in range(mesh.get_surface_count()):
+		# Create a new instance of a face
+		faces.append(load("res://Scripts/Face.gd").new())
+		# Set the normal of the face
+		faces[i].set_normal(mesh.surface_get_arrays(i)[1])
+		# Set the area of the face
+		for vertex in range(i * 3, (i * 3) + 3):
+			face.append(verticies[vertex])
+			if(face.size() == 3):
+				# Calculate the area of each face
+				var a = Vector3(face[0]).distance_to(Vector3(face[1]))
+#				print(a)
+				var b = Vector3(face[1]).distance_to(Vector3(face[2]))
+#				print(b)
+				var c = Vector3(face[0]).distance_to(Vector3(face[2]))
+#				print(c)
+				
+				var s = (a+b+c)/2
+				
+				faces[i].set_area(sqrt(s*(s-a)*(s-b)*(s-c)))
+				faces[i].set_centre_point((a+b+c)/2)
+				
+				# Reset face
+				face = []
+	
+	# Get normals
+#	for i in range(mesh.get_surface_count()):
+#		face_normals = mesh.surface_get_arrays(i)[1]
+
+#	var face = []
+#	for vertex in mesh.get_faces():
+#		face.append(vertex)
+#		if(face.size() == 3):
+#			# Calculate the area of each face
+#			var a = Vector3(face[0]).distance_to(Vector3(face[1]))
+##			print(a)
+#			var b = Vector3(face[1]).distance_to(Vector3(face[2]))
+##			print(b)
+#			var c = Vector3(face[0]).distance_to(Vector3(face[2]))
+##			print(c)
+#
+#			var s = (a+b+c)/2
+#
+#			face_area.append(sqrt(s*(s-a)*(s-b)*(s-c)))
+#			face_centre.append((a+b+c)/2)
+#
+#			# Reset face
+#			face = []
 	
 	# Calculate total area of mesh
-	for area in face_area:
-		total_area += area
+	for i in faces:
+		total_area += i.get_area()
 	
 	print (total_area)
 	
@@ -70,11 +100,11 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
 	
 	for count in range(0, face_normals.size()):
-		force_average += Vector3(face_normals[count]) + parent_rotation + global_transform.basis.y
+		force_average += Vector3(face_normals[count]) + parent_rotation + global_transform.basis.y# * face_area
 	
 	force_average /= face_normals.size()
 	
-	return force_average * sine_average
+	return force_average * sine_average * delta# * total_area
 
 func set_debug_mode(mode):
 	DEBUG_MODE = mode
