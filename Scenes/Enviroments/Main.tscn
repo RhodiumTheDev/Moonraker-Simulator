@@ -13,7 +13,7 @@ extents = Vector3( 100, 0.001, 100 )
 [node name="Aircraft" type="Spatial" parent="."]
 
 [node name="Test_Aircraft" parent="Aircraft" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2391, 20.2461, -0.757279 )
 DEBUG_MODE = true
 
 [node name="StaticBody" type="StaticBody" parent="."]
@@ -27,3 +27,4 @@ shape = SubResource( 2 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 0.940413, -0.157221, 0.301505, 0, 0.886688, 0.462368, -0.340035, -0.434817, 0.833853, 4.70567, 21.818, 10.044 )
+current = true
