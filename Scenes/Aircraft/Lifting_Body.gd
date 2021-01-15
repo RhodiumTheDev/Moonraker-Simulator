@@ -109,14 +109,14 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
 
 	force_average /= faces.size()
-	force = force_average * delta * 10
+	force = force_average * delta
 	$debug.clear()
 	$debug.begin(Mesh.PRIMITIVE_LINES)
 	$debug.add_vertex(Vector3(0,0,0))
 	$debug.add_vertex(force)
 	$debug.end()
 	
-	return force
+	return force + parent_rotation + global_transform.basis.y
 
 func set_debug_mode(mode):
 	DEBUG_MODE = mode
