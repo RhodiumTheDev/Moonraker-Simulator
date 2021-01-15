@@ -98,19 +98,18 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 #		sine_average += cos((i.get_normal()[0] + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
 #
 #	sine_average /= faces.size()
-#	print(sine_average)
+#	print(parent_rotation)
 #
 #	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
 #	for i in faces:
 #		force_average += Vector3(i.get_normal()[0]) + parent_rotation + global_transform.basis.y * i.get_area()
 
 	for i in faces:
-		force_average += Vector3(velocity_vector) + parent_rotation + global_transform.basis.y * i.get_area() * cos((i.get_normal()[0] + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
-
+		force_average += velocity_vector * i.get_area() * cos((i.get_normal()[0] + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
 	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
 
 	force_average /= faces.size()
-	force = force_average * delta
+	force = force_average * delta * 10
 	$debug.clear()
 	$debug.begin(Mesh.PRIMITIVE_LINES)
 	$debug.add_vertex(Vector3(0,0,0))
