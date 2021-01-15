@@ -84,26 +84,33 @@ func _ready():
 
 func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 	
+	
 	var sine_average = 0
 	var force_average = Vector3(0,0,0)
 	var force = Vector3(0,0,0)
 	
-	# Get the average sine between the normal directions and the velocity direction
-	# This could possibly be changed to use the dot product in future implementations of the physics engine
-	# However, sign returns from -1 to 1, but a dot product is ~-3 to 1, so this could not work as intended.
-	
-	for i in faces:
-		sine_average += sin((i.get_normal()[0] + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
-	
-	sine_average /= faces.size()
+	# Best for aerofoils
+#	# Get the average sine between the normal directions and the velocity direction
+#	# This could possibly be changed to use the dot product in future implementations of the physics engine
+#	# However, sign returns from -1 to 1, but a dot product is ~-3 to 1, so this could not work as intended.
+#
+#	for i in faces:
+#		sine_average += cos((i.get_normal()[0] + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
+#
+#	sine_average /= faces.size()
 #	print(sine_average)
-	
-	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
+#
+#	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
+#	for i in faces:
+#		force_average += Vector3(i.get_normal()[0]) + parent_rotation + global_transform.basis.y * i.get_area()
+
 	for i in faces:
-		force_average += Vector3(i.get_normal()[0]) + parent_rotation + global_transform.basis.y * i.get_area()
-	
+		force_average += Vector3(velocity_vector) + parent_rotation + global_transform.basis.y * i.get_area() * cos((i.get_normal()[0] + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
+
+	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
+
 	force_average /= faces.size()
-	force = force_average * sine_average * delta * 100
+	force = force_average * delta
 	$debug.clear()
 	$debug.begin(Mesh.PRIMITIVE_LINES)
 	$debug.add_vertex(Vector3(0,0,0))

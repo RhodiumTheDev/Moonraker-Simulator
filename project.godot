@@ -19,6 +19,10 @@ config/name="Moonraker Project Version 1"
 run/main_scene="res://Scenes/Enviroments/Main.tscn"
 config/icon="res://icon.png"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "orbit_camera" )
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
