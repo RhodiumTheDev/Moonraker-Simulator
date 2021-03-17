@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Scenes/Aircraft/Lifting_Body.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Lifting_Body.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Models/testWingV2.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://Assets/Materials/wing_shader_material.tres" type="Material" id=3]
+
 
 [node name="Lifting_Body" type="MeshInstance"]
 mesh = ExtResource( 2 )
