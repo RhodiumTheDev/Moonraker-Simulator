@@ -1,4 +1,5 @@
-# TODO: Cange all the arrays sotring face data into an array of object instances
+# TODO: Implement relative centre points and lift moment calculated from that
+# TODO: Render guide/debug lines from each face centre
 
 extends MeshInstance
 
