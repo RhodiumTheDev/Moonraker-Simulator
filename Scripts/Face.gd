@@ -1,4 +1,4 @@
-# Face object to store each faces:
+# Face object to store each face's:
 # - Area
 # - Centre Point
 # - Normal
