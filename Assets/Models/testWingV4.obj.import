@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/testWingV4.obj-fb76f3f2d501a71fd5b855af1c07e6ab.mesh"
+
+[deps]
+
+files=[ "res://.import/testWingV4.obj-fb76f3f2d501a71fd5b855af1c07e6ab.mesh" ]
+
+source_file="res://Assets/Models/testWingV4.obj"
+dest_files=[ "res://.import/testWingV4.obj-fb76f3f2d501a71fd5b855af1c07e6ab.mesh", "res://.import/testWingV4.obj-fb76f3f2d501a71fd5b855af1c07e6ab.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
