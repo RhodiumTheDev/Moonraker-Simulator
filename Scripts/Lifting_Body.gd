@@ -1,4 +1,5 @@
 # TODO: Implement relative centre points and lift moment calculated from that
+# TODO: Calculate normalised vecotrs from the centre point to use as the face normals
 # TODO: Render guide/debug lines from each face centre
 
 extends MeshInstance
@@ -114,8 +115,6 @@ func _ready():
 	set_debug_mode(DEBUG_MODE)
 
 func calculate_lift(delta, mass, velocity_vector, parent_rotation):
-	
-	
 	var sine_average = 0
 	var force_average = Vector3(0,0,0)
 	var force = Vector3(0,0,0)
