@@ -14,7 +14,7 @@ func _ready():
 func _physics_process(delta):
 	for lifting_body in lifting_bodies:
 		add_force(lifting_body.calculate_lift(delta, mass, linear_velocity, global_transform.basis.y), lifting_body.translation)
-#		pass
+		pass
 	
 #	print(linear_velocity)
 #	print(angular_velocity)

@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/Lifting_Body.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Models/testWingV2.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://Assets/Models/testWingV3.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://Assets/Materials/wing_shader_material.tres" type="Material" id=3]
 
-
 [node name="Lifting_Body" type="MeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000772953, 0, -0.0081026 )
 mesh = ExtResource( 2 )
 material/0 = ExtResource( 3 )
 script = ExtResource( 1 )

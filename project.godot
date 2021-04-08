@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Moonraker Project Version 1"
+config/name="Moonraker Project Version 2"
 run/main_scene="res://Scenes/Enviroments/Main.tscn"
 config/icon="res://icon.png"
 

@@ -23,29 +23,59 @@ func _ready():
 	
 	# Iterate through each face, set the normals, face area, and add a face instance to the array of faces
 	var verticies = mesh.get_faces()
+	
+	# Interstingly enough, mesh.get_faces() returns one too many faces which is a copy of the first one
+	# This stores a reference of the first face, which the last face will check against
+	# If they are equal, then the last face will be ignored
+	var first_face = [verticies[0], verticies[1], verticies[2]]
+#	print(first_face)
+	
 	var face = []
 	# For every face:
-	for i in range(mesh.get_surface_count()):
+	# mesh.get_surface_count()
+	for i in range(mesh.get_faces().size()/3):
 		# Create a new instance of a face
 		faces.append(load("res://Scripts/Face.gd").new())
-		# Set the normal of the face
-		faces[i].set_normal(mesh.surface_get_arrays(i)[1])
+
 		# Set the area of the face
-		for vertex in range(i * 3, (i * 3) + 3):
+		# Iterate through each group of three verticies that form a face
+		for vertex in range((i*3), (i*3)+3):
 			face.append(verticies[vertex])
 			if(face.size() == 3):
-				# Calculate the area of each face
-				var a = Vector3(face[0]).distance_to(Vector3(face[1]))
-#				print(a)
-				var b = Vector3(face[1]).distance_to(Vector3(face[2]))
-#				print(b)
-				var c = Vector3(face[0]).distance_to(Vector3(face[2]))
-#				print(c)
+
+				# Calculate the area of each triangular face
+				# Get each edge of the tri
+				# Calculate the area of the tri
+				# Calculate the centre point of each tri
+
+				# Get each vertex as a vector
+				var a = Vector3(face[0])
+				var b = Vector3(face[1])
+				var c = Vector3(face[2])
 				
-				var s = (a+b+c)/2
+				print(a)
+				print(b)
+				print(c)
+
+				# Get each edge length as the distance to each vertex
+				var ab = a.distance_to(b)
+#				print(ab)
+				var bc = b.distance_to(c)
+#				print(bc)
+				var ac = a.distance_to(c)
+#				print(ac)
+
+				# Calcuate and set the surface area
+				var s = (ab+bc+ac)/2
+				faces[i].set_area(s)
+
+				# Find the centoid of the tri
+
+				# Set the centre point of the face
+				faces[i].set_centre_point(null)
 				
-				faces[i].set_area(sqrt(s*(s-a)*(s-b)*(s-c)))
-				faces[i].set_centre_point((a+b+c)/2)
+				# Set the centoid's orientation
+				faces[i].set_normal(null)
 				
 				# Reset face
 				face = []
@@ -104,7 +134,6 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 #	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
 #	for i in faces:
 #		force_average += Vector3(i.get_normal()[0]) + parent_rotation + global_transform.basis.y * i.get_area()
-
 	for i in faces:
 		force_average += velocity_vector * i.get_area() * cos((i.get_normal()[0] + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
 	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals

@@ -15,6 +15,7 @@ extents = Vector3( 100, 0.001, 100 )
 
 [node name="Test_Aircraft" parent="Aircraft" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 0.948959, 0.315401, 0, -0.315401, 0.948959, 0, 20, 0 )
+LIFTING_BODIES = [ NodePath("Lifting_Body") ]
 
 [node name="OrbitCameraAnchor" type="Spatial" parent="Aircraft/Test_Aircraft"]
 
