@@ -63,9 +63,10 @@ func _ready():
 		faces[i].set_area(s)
 
 		# Set the centre point of the face
+		# This isn't an exact centre, but is accurate enough for now
 		faces[i].set_centre_point((a+b+c)/2)
 		
-		# Set the centoid's orientation
+		# Set the tri's normal
 		faces[i].set_normal((b - c).cross(a - b).normalized())
 		
 		# Reset face
