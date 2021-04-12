@@ -1,7 +1,3 @@
-# TODO: Implement relative centre points and lift moment calculated from that
-# TODO: Calculate normalised vecotrs from the centre point to use as the face normals
-# TODO: Render guide/debug lines from each face centre
-
 extends MeshInstance
 
 export(float) var AREOFOIL_COEFFICIENT = 0
@@ -21,6 +17,8 @@ var face_normals = []
 
 func _ready():
 	# Figure out the area of the mesh
+	print("Using mdt")
+	mdt.create_from_surface(mesh, 0)
 	
 	# Iterate through each face, set the normals, face area, and add a face instance to the array of faces
 	var verticies = mesh.get_faces()
@@ -34,52 +32,44 @@ func _ready():
 	var face = []
 	# For every face:
 	# mesh.get_surface_count()
-	for i in range(mesh.get_faces().size()/3):
+	for i in range(mdt.get_face_count()):
 		# Create a new instance of a face
 		faces.append(load("res://Scripts/Face.gd").new())
 
-		# Set the area of the face
-		# Iterate through each group of three verticies that form a face
-		for vertex in range((i*3), (i*3)+3):
-			face.append(verticies[vertex])
-			if(face.size() == 3):
+		# Calculate the area of each triangular face
+		# Get each edge of the tri
+		# Calculate the area of the tri
+		# Calculate the centre point of each tri
 
-				# Calculate the area of each triangular face
-				# Get each edge of the tri
-				# Calculate the area of the tri
-				# Calculate the centre point of each tri
+		# Get each vertex as a vector
+		var a = mdt.get_vertex(mdt.get_face_vertex(i, 0))
+		var b = mdt.get_vertex(mdt.get_face_vertex(i, 1))
+		var c = mdt.get_vertex(mdt.get_face_vertex(i, 2))
+		
+		print(a)
+		print(b)
+		print(c)
 
-				# Get each vertex as a vector
-				var a = Vector3(face[0])
-				var b = Vector3(face[1])
-				var c = Vector3(face[2])
-				
-				print(a)
-				print(b)
-				print(c)
-
-				# Get each edge length as the distance to each vertex
-				var ab = a.distance_to(b)
+		# Get each edge length as the distance to each vertex
+		var ab = a.distance_to(b)
 #				print(ab)
-				var bc = b.distance_to(c)
+		var bc = b.distance_to(c)
 #				print(bc)
-				var ac = a.distance_to(c)
+		var ac = a.distance_to(c)
 #				print(ac)
 
-				# Calcuate and set the surface area
-				var s = (ab+bc+ac)/2
-				faces[i].set_area(s)
+		# Calcuate and set the surface area
+		var s = (ab+bc+ac)/2
+		faces[i].set_area(s)
 
-				# Find the centoid of the tri
-
-				# Set the centre point of the face
-				faces[i].set_centre_point(null)
-				
-				# Set the centoid's orientation
-				faces[i].set_normal(null)
-				
-				# Reset face
-				face = []
+		# Set the centre point of the face
+		faces[i].set_centre_point((a+b+c)/2)
+		
+		# Set the centoid's orientation
+		faces[i].set_normal((b - c).cross(a - b).normalized())
+		
+		# Reset face
+		face = []
 	
 	# Get normals
 #	for i in range(mesh.get_surface_count()):
@@ -130,20 +120,23 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 #	sine_average /= faces.size()
 #	print(parent_rotation)
 #
-#	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
+#	# Return a Vector3 based off of the lift alcualtions for every normal, then divide it by the amount of normals
 #	for i in faces:
 #		force_average += Vector3(i.get_normal()[0]) + parent_rotation + global_transform.basis.y * i.get_area()
-	for i in faces:
-		force_average += velocity_vector * i.get_area() * cos((i.get_normal()[0] + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
-	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
-
-	force_average /= faces.size()
-	force = force_average * delta
 	$debug.clear()
 	$debug.begin(Mesh.PRIMITIVE_LINES)
-	$debug.add_vertex(Vector3(0,0,0))
-	$debug.add_vertex(force)
+	for i in faces:
+		# TODO: Change to remove reliabce on global transform basis y
+		var loc_force = velocity_vector * i.get_area() * cos((i.get_normal() + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
+		force_average += loc_force
+		$debug.add_vertex(i.get_centre_point())
+		$debug.add_vertex(i.get_centre_point()+loc_force/5)
 	$debug.end()
+	
+	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
+	force_average /= faces.size()
+	force = force_average * delta
+	
 	
 	return force + parent_rotation + global_transform.basis.y
 
