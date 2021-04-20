@@ -1,7 +1,7 @@
 extends RigidBody
 
 export(bool) var DEBUG_MODE = false
-export(Array) var LIFTING_BODIES = []
+export(Array, NodePath) var LIFTING_BODIES = []
 
 var lifting_bodies = []
 

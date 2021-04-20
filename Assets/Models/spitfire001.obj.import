@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/spitfire001.obj-8ebfab12779072659944174c7498b009.mesh"
+
+[deps]
+
+files=[ "res://.import/spitfire001.obj-8ebfab12779072659944174c7498b009.mesh" ]
+
+source_file="res://Assets/Models/spitfire001.obj"
+dest_files=[ "res://.import/spitfire001.obj-8ebfab12779072659944174c7498b009.mesh", "res://.import/spitfire001.obj-8ebfab12779072659944174c7498b009.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

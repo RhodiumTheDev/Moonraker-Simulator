@@ -3,6 +3,7 @@ extends MeshInstance
 export(float) var AREOFOIL_COEFFICIENT = 0
 export(NodePath) var ROTATION_PARENT = null
 export(bool) var DEBUG_MODE = false
+export(int, -1, 1, 1) var WING_AUTH = 0
 
 var mdt = MeshDataTool.new()
 var total_area = 0.00
@@ -127,8 +128,8 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 	$debug.clear()
 	$debug.begin(Mesh.PRIMITIVE_LINES)
 	for i in faces:
-		# TODO: Change to remove reliabce on global transform basis y
-		var loc_force = velocity_vector * i.get_area() * cos((i.get_normal() + parent_rotation + global_transform.basis.y).angle_to(velocity_vector))
+		# TODO: Change to remove reliance on global transform basis y
+		var loc_force = velocity_vector * i.get_area() * cos((i.get_normal() + parent_rotation  + (global_transform.basis.y * float(WING_AUTH))).angle_to(velocity_vector))
 		force_average += loc_force
 		$debug.add_vertex(i.get_centre_point())
 		$debug.add_vertex(i.get_centre_point()+loc_force/5)
@@ -139,7 +140,8 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 	force = force_average * delta
 	
 	
-	return force + parent_rotation + global_transform.basis.y
+#	return force + parent_rotation + (global_transform.basis.y * float(RIGHT_WING) * -1)
+	return force + parent_rotation
 
 func set_debug_mode(mode):
 	DEBUG_MODE = mode
