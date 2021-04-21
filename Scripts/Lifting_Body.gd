@@ -47,9 +47,9 @@ func _ready():
 		var b = mdt.get_vertex(mdt.get_face_vertex(i, 1))
 		var c = mdt.get_vertex(mdt.get_face_vertex(i, 2))
 		
-		print(a)
-		print(b)
-		print(c)
+#		print(a)
+#		print(b)
+#		print(c)
 
 		# Get each edge length as the distance to each vertex
 		var ab = a.distance_to(b)
@@ -106,7 +106,7 @@ func _ready():
 	# Set shader params
 	set_debug_mode(DEBUG_MODE)
 
-func calculate_lift(delta, mass, velocity_vector, parent_rotation):
+func calculate_lift(delta, velocity, velocity_vector):
 	var sine_average = 0
 	var force_average = Vector3(0,0,0)
 	var force = Vector3(0,0,0)
@@ -129,10 +129,13 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 	$debug.begin(Mesh.PRIMITIVE_LINES)
 	for i in faces:
 		# TODO: Change to remove reliance on global transform basis y
-		var loc_force = velocity_vector * i.get_area() * cos((i.get_normal() + parent_rotation  + (global_transform.basis.y * float(WING_AUTH))).angle_to(velocity_vector))
+		# look_at might be useful
+#		var loc_force = velocity_vector * i.get_area() * cos((i.get_normal() + parent_rotation  + (global_transform.basis.y * float(WING_AUTH))).angle_to(velocity_vector))
+#		
+		var loc_force = (i.get_normal()*cos(global_transform.basis.y.angle_to(velocity_vector))*-1*i.get_area() * velocity * 10) + (i.get_normal() * (sin(global_transform.basis.y.angle_to(velocity_vector)) * AREOFOIL_COEFFICIENT) * velocity)
 		force_average += loc_force
 		$debug.add_vertex(i.get_centre_point())
-		$debug.add_vertex(i.get_centre_point()+loc_force/5)
+		$debug.add_vertex(i.get_centre_point()+loc_force*0.001)
 	$debug.end()
 	
 	# Return a Vector3 based off of the lift alcualtions for every normal, then devide it by the amount of normals
@@ -140,8 +143,8 @@ func calculate_lift(delta, mass, velocity_vector, parent_rotation):
 	force = force_average * delta
 	
 	
-#	return force + parent_rotation + (global_transform.basis.y * float(RIGHT_WING) * -1)
-	return force + parent_rotation
+	return force * 50
+#	return force + parent_rotation
 
 func set_debug_mode(mode):
 	DEBUG_MODE = mode

@@ -1,39 +1,35 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Scenes/Aircraft/Test_Aircraft.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/orbit_camera/orbit_camera.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Aircraft/Spitfire_V2.tscn" type="PackedScene" id=1]
 
 [sub_resource type="PlaneMesh" id=1]
-size = Vector2( 200, 200 )
+size = Vector2( 200, 4000 )
 
 [sub_resource type="BoxShape" id=2]
-extents = Vector3( 100, 0.001, 100 )
+extents = Vector3( 100, 2, 2000 )
 
 [node name="World" type="Spatial"]
 
 [node name="Aircraft" type="Spatial" parent="."]
 
-[node name="Test_Aircraft" parent="Aircraft" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 0.968869, 0.247574, 0, -0.247574, 0.968869, 0, 20, 0 )
+[node name="Spitfire" parent="Aircraft" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50805, 56.3368 )
 
-[node name="OrbitCameraAnchor" type="Spatial" parent="Aircraft/Test_Aircraft"]
-
-[node name="OrbitCamera" type="Camera" parent="Aircraft/Test_Aircraft/OrbitCameraAnchor"]
-current = true
-script = ExtResource( 2 )
-DEFAULT_DISTANCE = 10.0
-ROTATE_SPEED = 1.0
-ANCHOR_NODE_PATH = NodePath("../../OrbitCameraAnchor")
-
-[node name="StaticBody" type="StaticBody" parent="."]
+[node name="StaticBody" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1926.33 )
+mode = 1
 
 [node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
 mesh = SubResource( 1 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0 )
 shape = SubResource( 2 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.940413, -0.157221, 0.301505, 0, 0.886688, 0.462368, -0.340035, -0.434817, 0.833853, 4.70567, 21.818, 10.044 )
-current = true
+transform = Transform( 0.940413, -0.157221, 0.301505, 0, 0.886688, 0.462368, -0.340035, -0.434817, 0.833853, 9.93755, 21.818, 48.2507 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.938812, 0.0753873, -0.336078, 0.34443, -0.205483, 0.916048, 0, -0.975753, -0.218876, 0, 14.6998, 0 )
+shadow_enabled = true

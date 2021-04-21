@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/spitfireCatualVStab.obj-71043c373a1083265f4c9826d06acbef.mesh"
+
+[deps]
+
+files=[ "res://.import/spitfireCatualVStab.obj-71043c373a1083265f4c9826d06acbef.mesh" ]
+
+source_file="res://Assets/Models/Lifting Surface/spitfireCatualVStab.obj"
+dest_files=[ "res://.import/spitfireCatualVStab.obj-71043c373a1083265f4c9826d06acbef.mesh", "res://.import/spitfireCatualVStab.obj-71043c373a1083265f4c9826d06acbef.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
