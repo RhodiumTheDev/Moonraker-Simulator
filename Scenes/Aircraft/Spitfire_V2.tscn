@@ -47,10 +47,9 @@ shape = SubResource( 2 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.710812, 1.60104 )
 
 [node name="OrbitCamera" type="Camera" parent="Spatial"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00247383, 2.38419e-07, 0.0189134 )
 v_offset = 1.0
 current = true
-far = 8192.0
+far = 12000.0
 script = ExtResource( 1 )
 SCROLL_SPEED = 25.0
 DEFAULT_DISTANCE = 10.0
