@@ -3,7 +3,7 @@ extends MeshInstance
 export(float) var AREOFOIL_COEFFICIENT = 0
 export(NodePath) var ROTATION_PARENT = null
 export(bool) var DEBUG_MODE = false
-export(int, -1, 1, 1) var WING_AUTH = 0
+export(bool) var VERTICAL = false
 
 var mdt = MeshDataTool.new()
 var total_area = 0.00
@@ -132,7 +132,12 @@ func calculate_lift(delta, velocity, velocity_vector):
 		# look_at might be useful
 #		var loc_force = velocity_vector * i.get_area() * cos((i.get_normal() + parent_rotation  + (global_transform.basis.y * float(WING_AUTH))).angle_to(velocity_vector))
 #		
-		var loc_force = (i.get_normal()*cos(global_transform.basis.y.angle_to(velocity_vector))*-5*i.get_area() * velocity * 1) + (i.get_normal() * (sin(global_transform.basis.y.angle_to(velocity_vector)) * AREOFOIL_COEFFICIENT) * velocity)
+		
+		if(VERTICAL): print(global_transform.basis.y)
+		var drag_lift = i.get_normal()*cos(global_transform.basis.y.angle_to(velocity_vector))*-1*i.get_area() * velocity * 10
+		var aero_lift = i.get_normal() * (sin(global_transform.basis.y.angle_to(velocity_vector)) * AREOFOIL_COEFFICIENT) * velocity
+		var loc_force = drag_lift + aero_lift
+#		var loc_force = (i.get_normal()*cos(global_transform.basis.y.angle_to(velocity_vector))*-1*i.get_area() * velocity * 10) + (i.get_normal() * (sin(global_transform.basis.y.angle_to(velocity_vector)) * AREOFOIL_COEFFICIENT) * velocity)
 		force_average += loc_force
 		$debug.add_vertex(i.get_centre_point())
 		$debug.add_vertex(i.get_centre_point()+loc_force*0.001)

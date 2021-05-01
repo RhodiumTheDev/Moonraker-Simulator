@@ -11,10 +11,10 @@ extents = Vector3( 100, 2, 2000 )
 
 [node name="World" type="Spatial"]
 
-[node name="Aircraft" type="Spatial" parent="."]
+[node name="Spitfire" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31409, 56.337 )
 
-[node name="Spitfire" parent="Aircraft" instance=ExtResource( 1 )]
-transform = Transform( 0.840046, 0, -0.542515, 0, 1, 0, 0.542515, 0, 0.840046, 0, 1.508, 56.337 )
+[node name="Aircraft" type="Spatial" parent="."]
 
 [node name="Terrain" type="RigidBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -948.263, -1926.33 )

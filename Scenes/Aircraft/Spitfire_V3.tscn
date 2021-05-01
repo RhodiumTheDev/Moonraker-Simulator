@@ -15,12 +15,6 @@
 [ext_resource path="res://Assets/Models/Lifting Surface/spitfireHStab.obj" type="ArrayMesh" id=13]
 [ext_resource path="res://Assets/Models/Lifting Surface/spitfireHControl.obj" type="ArrayMesh" id=14]
 
-[sub_resource type="BoxShape" id=1]
-extents = Vector3( 1, 0.337926, 5.4663 )
-
-[sub_resource type="BoxShape" id=2]
-extents = Vector3( 1, 0.52774, 2.15363 )
-
 [sub_resource type="CapsuleShape" id=3]
 radius = 0.695615
 height = 0.782879
@@ -29,11 +23,28 @@ height = 0.782879
 radius = 0.305707
 height = 4.04927
 
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 1, 0.337926, 5.4663 )
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 1, 0.52774, 2.15363 )
+
 [node name="Spitfire" type="RigidBody"]
-mass = 357.143
+mass = 286.966
+gravity_scale = 0.0
 script = ExtResource( 2 )
 DEBUG_MODE = true
-LIFTING_BODIES = [ NodePath("Left_Wing"), NodePath("Right_Wing"), NodePath("H_Stab"), NodePath("Left_Control_Surface_Anchor/Lifting_Body"), NodePath("Right_Control_Surface_Anchor/Lifting_Body"), NodePath("H_Control_Surface_Anchor/Lifting_Body") ]
+LIFTING_BODIES = [ NodePath("V_Stab"), NodePath("H_Stab"), NodePath("H_Control"), NodePath("Left_Wing"), NodePath("Left_Control"), NodePath("Right_Wing"), NodePath("Right_Control") ]
+
+[node name="spitfireWithMaterial" parent="." instance=ExtResource( 3 )]
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -0.876097, -0.419969 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape2" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.23693, 3.72694 )
+shape = SubResource( 4 )
 
 [node name="Wings" type="CollisionShape" parent="."]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -0.414298, 0.102834 )
@@ -71,36 +82,18 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.287, 5.386 )
 mesh = ExtResource( 13 )
 
 [node name="V_Stab" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.761, 5.665 )
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 5.665 )
 mesh = ExtResource( 8 )
+VERTICAL = true
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -0.876097, -0.419969 )
-shape = SubResource( 3 )
-
-[node name="CollisionShape2" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.23693, 3.72694 )
-shape = SubResource( 4 )
-
-[node name="Left_Control_Surface_Anchor" type="Spatial" parent="."]
+[node name="Left_Control" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.69, -0.332, 0.611 )
-
-[node name="Lifting_Body" parent="Left_Control_Surface_Anchor" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = ExtResource( 12 )
 
-[node name="Right_Control_Surface_Anchor" type="Spatial" parent="."]
+[node name="Right_Control" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.69, -0.332, 0.611 )
-
-[node name="Lifting_Body" parent="Right_Control_Surface_Anchor" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = ExtResource( 11 )
 
-[node name="H_Control_Surface_Anchor" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.275, 5.538 )
-
-[node name="Lifting_Body" parent="H_Control_Surface_Anchor" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000772953, 0, -0.00810242 )
+[node name="H_Control" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000772953, 0.275, 5.5299 )
 mesh = ExtResource( 14 )
-
-[node name="spitfireWithMaterial" parent="." instance=ExtResource( 3 )]
