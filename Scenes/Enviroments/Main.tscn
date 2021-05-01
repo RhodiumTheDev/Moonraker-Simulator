@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scenes/Aircraft/Spitfire_V2.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Aircraft/Spitfire_V3.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Enviroments/Trowbridge.tscn" type="PackedScene" id=2]
 
 [sub_resource type="PlaneMesh" id=1]
@@ -14,7 +14,7 @@ extents = Vector3( 100, 2, 2000 )
 [node name="Aircraft" type="Spatial" parent="."]
 
 [node name="Spitfire" parent="Aircraft" instance=ExtResource( 1 )]
-transform = Transform( 0.840046, 0, -0.542515, 0, 1, 0, 0.542515, 0, 0.840046, 0, 1.50805, 56.3368 )
+transform = Transform( 0.840046, 0, -0.542515, 0, 1, 0, 0.542515, 0, 0.840046, 0, 1.508, 56.337 )
 
 [node name="Terrain" type="RigidBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -948.263, -1926.33 )

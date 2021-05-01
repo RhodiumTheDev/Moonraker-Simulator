@@ -132,7 +132,7 @@ func calculate_lift(delta, velocity, velocity_vector):
 		# look_at might be useful
 #		var loc_force = velocity_vector * i.get_area() * cos((i.get_normal() + parent_rotation  + (global_transform.basis.y * float(WING_AUTH))).angle_to(velocity_vector))
 #		
-		var loc_force = (i.get_normal()*cos(global_transform.basis.y.angle_to(velocity_vector))*-1*i.get_area() * velocity * 10) + (i.get_normal() * (sin(global_transform.basis.y.angle_to(velocity_vector)) * AREOFOIL_COEFFICIENT) * velocity)
+		var loc_force = (i.get_normal()*cos(global_transform.basis.y.angle_to(velocity_vector))*-5*i.get_area() * velocity * 1) + (i.get_normal() * (sin(global_transform.basis.y.angle_to(velocity_vector)) * AREOFOIL_COEFFICIENT) * velocity)
 		force_average += loc_force
 		$debug.add_vertex(i.get_centre_point())
 		$debug.add_vertex(i.get_centre_point()+loc_force*0.001)

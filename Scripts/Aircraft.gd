@@ -13,7 +13,7 @@ func _ready():
 		lifting_bodies.append(get_node(node_path))
 		get_node(node_path).set_debug_mode(DEBUG_MODE)
 	set_friction(0)
-	
+
 func _physics_process(delta):
 	var velocity = Vector3(0,0,0).distance_to(linear_velocity)
 
@@ -22,24 +22,40 @@ func _physics_process(delta):
 		pass
 	
 	if Input.is_action_pressed("pitch_down"):
-		add_force(global_transform.basis.y*300, global_transform.basis.z*5)
+		$"H_Control_Surface_Anchor/Lifting_Body".rotation = Vector3(0.5,0,0)
+#		add_force(global_transform.basis.y*300, global_transform.basis.z*5)
 	
-	if Input.is_action_pressed("pitch_up"):
-		add_force(global_transform.basis.y*-300, global_transform.basis.z*5)
+	elif Input.is_action_pressed("pitch_up"):
+		$"H_Control_Surface_Anchor/Lifting_Body".rotation = Vector3(-0.5,0,0)
+#		add_force(global_transform.basis.y*-300, global_transform.basis.z*5)
+
+	else:
+		$"H_Control_Surface_Anchor/Lifting_Body".rotation = Vector3(0,0,0)
 	
 	if Input.is_action_pressed("roll_CW"):
-		add_force(global_transform.basis.y*300, global_transform.basis.x * -3.246)
+		$"Left_Control_Surface_Anchor/Lifting_Body".rotation = Vector3(0.5,0,0)
+		$"Right_Control_Surface_Anchor/Lifting_Body".rotation = Vector3(-0.5,0,0)
+#		add_force(global_transform.basis.y*300, global_transform.basis.x * -3.246)
 	
-	if Input.is_action_pressed("roll_ACW"):
-		add_force(global_transform.basis.y*300, global_transform.basis.x * 3.246)
+	elif Input.is_action_pressed("roll_ACW"):
+		$"Left_Control_Surface_Anchor/Lifting_Body".rotation = Vector3(-0.5,0,0)
+		$"Right_Control_Surface_Anchor/Lifting_Body".rotation = Vector3(0.5,0,0)
+#		add_force(global_transform.basis.y*300, global_transform.basis.x * 3.246)
+	
+	else:
+		$"Left_Control_Surface_Anchor/Lifting_Body".rotation = Vector3(0,0,0)
+		$"Right_Control_Surface_Anchor/Lifting_Body".rotation = Vector3(0,0,0)
 	
 	if Input.is_action_pressed("yaw_left"):
+		$"V_Stab".rotation = Vector3(0,-0.4,0)
 		add_force(global_transform.basis.x*300, global_transform.basis.z*5)
 	
-	if Input.is_action_pressed("yaw_right"):
+	elif Input.is_action_pressed("yaw_right"):
+		$"V_Stab".rotation = Vector3(0,0.4,0)
 		add_force(global_transform.basis.x*-300, global_transform.basis.z*5)
-	
-	
+		
+	else:
+		$"V_Stab".rotation = Vector3(0,0,0)
 	
 	if Input.is_action_pressed("acc"):
 		accel += 1

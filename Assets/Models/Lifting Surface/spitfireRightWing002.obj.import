@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/spitfireRightWing002.obj-c5ac98174343a63b5cf1136cc2bb2742.mesh"
+
+[deps]
+
+files=[ "res://.import/spitfireRightWing002.obj-c5ac98174343a63b5cf1136cc2bb2742.mesh" ]
+
+source_file="res://Assets/Models/Lifting Surface/spitfireRightWing002.obj"
+dest_files=[ "res://.import/spitfireRightWing002.obj-c5ac98174343a63b5cf1136cc2bb2742.mesh", "res://.import/spitfireRightWing002.obj-c5ac98174343a63b5cf1136cc2bb2742.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
