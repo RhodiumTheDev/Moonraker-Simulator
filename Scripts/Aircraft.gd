@@ -2,6 +2,7 @@ extends RigidBody
 
 export(bool) var DEBUG_MODE = false
 export(Array, NodePath) var LIFTING_BODIES = []
+export(float) var CONTROL_SURFACE_SPEED = 1
 
 var lifting_bodies = []
 
@@ -61,37 +62,46 @@ func _physics_process(delta):
 		pass
 	
 	if Input.is_action_pressed("pitch_down"):
-		$H_Control.rotation = Vector3(0.5,0,0)
+		$H_Control.rotation = lerp($H_Control.rotation, Vector3(0.5,0,0) * Input.get_action_strength("pitch_down"), CONTROL_SURFACE_SPEED*delta)
+#		$H_Control.rotation = Vector3(0.5,0,0)
 #		add_force(global_transform.basis.y*300, global_transform.basis.z*5)
 	
 	elif Input.is_action_pressed("pitch_up"):
-		$H_Control.rotation = Vector3(-0.5,0,0)
+		$H_Control.rotation = lerp($H_Control.rotation, Vector3(-0.5,0,0) * Input.get_action_strength("pitch_up"), CONTROL_SURFACE_SPEED*delta)
+#		$H_Control.rotation = Vector3(-0.5,0,0)
 #		add_force(global_transform.basis.y*-300, global_transform.basis.z*5)
 
 	else:
-		$H_Control.rotation = Vector3(0,0,0)
+		$H_Control.rotation = lerp($H_Control.rotation, Vector3(0,0,0), CONTROL_SURFACE_SPEED*delta)
+#		$H_Control.rotation = Vector3(0,0,0)
 	
 	if Input.is_action_pressed("roll_CW"):
-		$Left_Control.rotation = Vector3(0.5,0,0)
-		$Right_Control.rotation = Vector3(-0.5,0,0)
+		$Left_Control.rotation = lerp($Left_Control.rotation, Vector3(0.5,0,0) * Input.get_action_strength("roll_CW"), CONTROL_SURFACE_SPEED*delta)
+#		$Left_Control.rotation = Vector3(0.5,0,0)
+		$Right_Control.rotation = lerp($Right_Control.rotation, Vector3(-0.5,0,0) * Input.get_action_strength("roll_CW"), CONTROL_SURFACE_SPEED*delta)
+#		$Right_Control.rotation = Vector3(-0.5,0,0)
 #		add_force(global_transform.basis.y*300, global_transform.basis.x * -3.246)
 	
 	elif Input.is_action_pressed("roll_ACW"):
-		$Left_Control.rotation = Vector3(-0.5,0,0)
-		$Right_Control.rotation = Vector3(0.5,0,0)
+		$Left_Control.rotation = lerp($Left_Control.rotation, Vector3(-0.5,0,0) * Input.get_action_strength("roll_ACW"), CONTROL_SURFACE_SPEED*delta)
+#		$Left_Control.rotation = Vector3(-0.5,0,0)
+		$Right_Control.rotation = lerp($Right_Control.rotation, Vector3(0.5,0,0) * Input.get_action_strength("roll_ACW"), CONTROL_SURFACE_SPEED*delta)
+#		$Right_Control.rotation = Vector3(0.5,0,0)
 #		add_force(global_transform.basis.y*300, global_transform.basis.x * 3.246)
 	
 	else:
-		$Left_Control.rotation = Vector3(0,0,0)
-		$Right_Control.rotation = Vector3(0,0,0)
+		$Left_Control.rotation = lerp($Left_Control.rotation, Vector3(0,0,0), CONTROL_SURFACE_SPEED*delta)
+#		$Left_Control.rotation = Vector3(0,0,0)
+		$Right_Control.rotation = lerp($Right_Control.rotation, Vector3(0,0,0), CONTROL_SURFACE_SPEED*delta)
+#		$Right_Control.rotation = Vector3(0,0,0)
 	
 	if Input.is_action_pressed("yaw_left"):
 #		$"V_Stab".rotation = Vector3(0,-0.4,0)
-		add_force(global_transform.basis.x*300, global_transform.basis.z*5)
+		add_force(global_transform.basis.x*300 * Input.get_action_strength("yaw_left"), global_transform.basis.z*5)
 	
 	elif Input.is_action_pressed("yaw_right"):
 #		$"V_Stab".rotation = Vector3(0,0.4,0)
-		add_force(global_transform.basis.x*-300, global_transform.basis.z*5)
+		add_force(global_transform.basis.x*-300 * Input.get_action_strength("yaw_right"), global_transform.basis.z*5)
 		
 	else:
 #		$"V_Stab".rotation = Vector3(0,0,0)
@@ -103,8 +113,12 @@ func _physics_process(delta):
 	if Input.is_action_pressed("dec"):
 		accel -= 1
 	
-	accel = clamp(accel, 0, 150)
+	accel = clamp(accel, 0, 300)
+	$object/spitfirePropSlow.rotate_z(-accel*0.1)
 	add_force(global_transform.basis.z*-accel*50, Vector3(0,0,0))
+	#Add drag
+	add_force(linear_velocity * -50, Vector3(0,0,0))
+	print(velocity)
 #	print(accel)
 #	print(velocity)
 #	print(translation.y)

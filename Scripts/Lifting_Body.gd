@@ -1,6 +1,7 @@
 extends MeshInstance
 
 export(float) var AREOFOIL_COEFFICIENT = 0
+export(float, 1, 5) var DEFLECTION_COEFFICIENT = 1
 export(NodePath) var ROTATION_PARENT = null
 export(bool) var DEBUG_MODE = false
 export(bool) var VERTICAL = false
@@ -133,10 +134,13 @@ func calculate_lift(delta, velocity, velocity_vector):
 #		var loc_force = velocity_vector * i.get_area() * cos((i.get_normal() + parent_rotation  + (global_transform.basis.y * float(WING_AUTH))).angle_to(velocity_vector))
 #		
 		
-		if(VERTICAL): print(global_transform.basis.y)
-		var drag_lift = i.get_normal()*cos(global_transform.basis.y.angle_to(velocity_vector))*-1*i.get_area() * velocity * 10
-		var aero_lift = i.get_normal() * (sin(global_transform.basis.y.angle_to(velocity_vector)) * AREOFOIL_COEFFICIENT) * velocity
+#		if(VERTICAL): print(global_transform.basis.y)
+		var drag_lift = i.get_normal() * (cos(global_transform.basis.y.angle_to(velocity_vector))* -1 * DEFLECTION_COEFFICIENT * i.get_area()) * velocity * 10
+		var aero_lift = i.get_normal() * (sin(global_transform.basis.y.angle_to(velocity_vector)) * AREOFOIL_COEFFICIENT * i.get_area()) * velocity
 		var loc_force = drag_lift + aero_lift
+		# Rotate the force 90 degrees along the z axis to account for the fact that the lifting body is vertical
+		# Not the best implementation, but accounts for upwards bias in the physics engine
+		if(VERTICAL): loc_force = loc_force.rotated(global_transform.basis.z, deg2rad(90))
 #		var loc_force = (i.get_normal()*cos(global_transform.basis.y.angle_to(velocity_vector))*-1*i.get_area() * velocity * 10) + (i.get_normal() * (sin(global_transform.basis.y.angle_to(velocity_vector)) * AREOFOIL_COEFFICIENT) * velocity)
 		force_average += loc_force
 		$debug.add_vertex(i.get_centre_point())
@@ -148,7 +152,7 @@ func calculate_lift(delta, velocity, velocity_vector):
 	force = force_average * delta
 	
 	
-	return force * 50
+	return force * 60
 #	return force + parent_rotation
 
 func set_debug_mode(mode):

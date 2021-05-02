@@ -1,8 +1,8 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://addons/orbit_camera/orbit_camera.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Aircraft.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Aircraft/spitfireWithMaterial.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Models/spitfireGuns.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://Scenes/Aircraft/Version 1/Left_Wing.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/Aircraft/Version 1/Right_Wing.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Aircraft/Version 1/V_Stab.tscn" type="PackedScene" id=6]
@@ -14,45 +14,69 @@
 [ext_resource path="res://Assets/Models/Lifting Surface/spitfireLeftControl001.obj" type="ArrayMesh" id=12]
 [ext_resource path="res://Assets/Models/Lifting Surface/spitfireHStab.obj" type="ArrayMesh" id=13]
 [ext_resource path="res://Assets/Models/Lifting Surface/spitfireHControl.obj" type="ArrayMesh" id=14]
+[ext_resource path="res://Assets/Models/spitfire003.obj" type="ArrayMesh" id=15]
+[ext_resource path="res://Assets/Models/spitfireExhaust.obj" type="ArrayMesh" id=16]
+[ext_resource path="res://Assets/Models/spitfirePropSlow.obj" type="ArrayMesh" id=17]
+[ext_resource path="res://Assets/Materials/base.material" type="Material" id=18]
+[ext_resource path="res://Assets/Materials/glass.tres" type="Material" id=19]
 
-[sub_resource type="CapsuleShape" id=3]
+[sub_resource type="CapsuleShape" id=1]
 radius = 0.695615
 height = 0.782879
 
-[sub_resource type="CapsuleShape" id=4]
+[sub_resource type="CapsuleShape" id=2]
 radius = 0.305707
 height = 4.04927
 
-[sub_resource type="BoxShape" id=1]
+[sub_resource type="BoxShape" id=3]
 extents = Vector3( 1, 0.337926, 5.4663 )
 
-[sub_resource type="BoxShape" id=2]
+[sub_resource type="BoxShape" id=4]
 extents = Vector3( 1, 0.52774, 2.15363 )
 
 [node name="Spitfire" type="RigidBody"]
 mass = 286.966
-gravity_scale = 0.0
 script = ExtResource( 2 )
-DEBUG_MODE = true
-LIFTING_BODIES = [ NodePath("V_Stab"), NodePath("H_Stab"), NodePath("H_Control"), NodePath("Left_Wing"), NodePath("Left_Control"), NodePath("Right_Wing"), NodePath("Right_Control") ]
+LIFTING_BODIES = [ NodePath("H_Stab"), NodePath("H_Control"), NodePath("Left_Wing"), NodePath("Left_Control"), NodePath("Right_Wing"), NodePath("Right_Control"), NodePath("V_Stab") ]
+CONTROL_SURFACE_SPEED = 5.0
 
-[node name="spitfireWithMaterial" parent="." instance=ExtResource( 3 )]
+[node name="object" type="MeshInstance" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+mesh = ExtResource( 15 )
+material/0 = ExtResource( 18 )
+material/1 = ExtResource( 19 )
+
+[node name="spitfireExhaust" type="MeshInstance" parent="object"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.36095e-07, 0.103, 1.55674 )
+mesh = ExtResource( 16 )
+material/0 = null
+
+[node name="spitfireGuns" type="MeshInstance" parent="object"]
+mesh = ExtResource( 3 )
+material/0 = ExtResource( 18 )
+
+[node name="spitfirePropSlow" type="MeshInstance" parent="object"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.99244e-07, 0.102994, 2.27909 )
+mesh = ExtResource( 17 )
+material/0 = null
+material/1 = null
+material/2 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -0.876097, -0.419969 )
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="CollisionShape2" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.23693, 3.72694 )
-shape = SubResource( 4 )
+shape = SubResource( 2 )
 
 [node name="Wings" type="CollisionShape" parent="."]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -0.414298, 0.102834 )
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="Body" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0666512, 0.189331 )
-shape = SubResource( 2 )
+shape = SubResource( 4 )
 
 [node name="Spatial" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.710812, 1.60104 )
@@ -82,8 +106,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.287, 5.386 )
 mesh = ExtResource( 13 )
 
 [node name="V_Stab" parent="." instance=ExtResource( 7 )]
-transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 5.665 )
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.761, 5.665 )
 mesh = ExtResource( 8 )
+DEFLECTION_COEFFICIENT = 5.0
 VERTICAL = true
 
 [node name="Left_Control" parent="." instance=ExtResource( 7 )]

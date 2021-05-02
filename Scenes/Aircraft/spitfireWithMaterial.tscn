@@ -1,6 +1,32 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Models/spitfireWithMaterial.glb" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Materials/base.material" type="Material" id=2]
+[ext_resource path="res://Assets/Models/spitfireGuns.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://Assets/Models/spitfireExhaust.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://Assets/Models/spitfirePropSlow.obj" type="ArrayMesh" id=5]
+[ext_resource path="res://Assets/Models/spitfire003.obj" type="ArrayMesh" id=6]
 
 [node name="spitfireWithMaterial" instance=ExtResource( 1 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+
+[node name="spitfireExhaust" type="MeshInstance" parent="." index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.24215e-07, 0.107, 1.56828 )
+mesh = ExtResource( 4 )
+material/0 = null
+
+[node name="PlaneSimple" parent="." index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+mesh = ExtResource( 6 )
+material/1 = null
+
+[node name="spitfireGuns" type="MeshInstance" parent="." index="3"]
+mesh = ExtResource( 3 )
+material/0 = ExtResource( 2 )
+
+[node name="spitfirePropSlow" type="MeshInstance" parent="." index="4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.64213e-07, 0.107, 2.25463 )
+mesh = ExtResource( 5 )
+material/0 = null
+material/1 = null
+material/2 = null
