@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://addons/orbit_camera/orbit_camera.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Aircraft.gd" type="Script" id=2]
@@ -19,6 +19,21 @@
 [ext_resource path="res://Assets/Models/spitfirePropSlow.obj" type="ArrayMesh" id=17]
 [ext_resource path="res://Assets/Materials/base.material" type="Material" id=18]
 [ext_resource path="res://Assets/Materials/glass.tres" type="Material" id=19]
+[ext_resource path="res://Assets/Sounds/spitfireEngineLoop.ogg" type="AudioStream" id=20]
+
+[sub_resource type="SpatialMaterial" id=5]
+flags_unshaded = true
+albedo_color = Color( 0.843137, 0.784314, 0.572549, 1 )
+
+[sub_resource type="SphereMesh" id=6]
+material = SubResource( 5 )
+radius = 0.05
+height = 0.1
+radial_segments = 6
+rings = 2
+
+[sub_resource type="Curve" id=7]
+_data = [ Vector2( 0.382488, 1 ), 0.0, -0.117798, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.695615
@@ -37,8 +52,10 @@ extents = Vector3( 1, 0.52774, 2.15363 )
 [node name="Spitfire" type="RigidBody"]
 mass = 286.966
 script = ExtResource( 2 )
+DEBUG_MODE = true
 LIFTING_BODIES = [ NodePath("H_Stab"), NodePath("H_Control"), NodePath("Left_Wing"), NodePath("Left_Control"), NodePath("Right_Wing"), NodePath("Right_Control"), NodePath("V_Stab") ]
 CONTROL_SURFACE_SPEED = 5.0
+THROTTLE_BIAS = 10.0
 
 [node name="object" type="MeshInstance" parent="."]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
@@ -61,6 +78,44 @@ mesh = ExtResource( 17 )
 material/0 = null
 material/1 = null
 material/2 = null
+
+[node name="leftGun" type="CPUParticles" parent="object"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.96938, -0.428123, 1.69482 )
+emitting = false
+amount = 50
+lifetime = 0.2
+explosiveness = 1.0
+mesh = SubResource( 6 )
+emission_shape = 1
+emission_sphere_radius = 0.02
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 3.0
+initial_velocity_random = 1.0
+damping = 8.7
+damping_random = 1.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 7 )
+
+[node name="rightGun" type="CPUParticles" parent="object"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.969, -0.428, 1.695 )
+emitting = false
+amount = 50
+lifetime = 0.2
+explosiveness = 1.0
+mesh = SubResource( 6 )
+emission_shape = 1
+emission_sphere_radius = 0.02
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 3.0
+initial_velocity_random = 1.0
+damping = 8.7
+damping_random = 1.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 7 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -0.876097, -0.419969 )
@@ -122,3 +177,9 @@ mesh = ExtResource( 11 )
 [node name="H_Control" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000772953, 0.275, 5.5299 )
 mesh = ExtResource( 14 )
+DEFLECTION_COEFFICIENT = 2.0
+
+[node name="engine" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 20 )
+unit_db = 34.958
+autoplay = true

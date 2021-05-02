@@ -3,9 +3,11 @@ extends RigidBody
 export(bool) var DEBUG_MODE = false
 export(Array, NodePath) var LIFTING_BODIES = []
 export(float) var CONTROL_SURFACE_SPEED = 1
+export(float, 1, 15) var THROTTLE_BIAS = 1
 
 var lifting_bodies = []
 
+var throttle = 0
 var accel = 0
 
 var test = true
@@ -108,17 +110,40 @@ func _physics_process(delta):
 		pass
 	
 	if Input.is_action_pressed("acc"):
-		accel += 1
+		throttle += 1
 	
 	if Input.is_action_pressed("dec"):
-		accel -= 1
+		throttle -= 1
 	
-	accel = clamp(accel, 0, 300)
+	throttle = clamp(throttle, 0, 300)
+	
+	# Slower to accelerate than deccelarate
+	if(throttle >= accel):
+		accel = lerp(accel, throttle, THROTTLE_BIAS * delta)
+	else:
+		accel = lerp(accel, throttle, THROTTLE_BIAS * 10 * delta)
+	
+	accel = clamp(accel, 10, 300)
+	
+	# Change the pitch of the engine sound, between 1 and 1.8, depending on the accelaration value
+	$engine.pitch_scale = accel * 0.003  + 1
 	$object/spitfirePropSlow.rotate_z(-accel*0.1)
 	add_force(global_transform.basis.z*-accel*50, Vector3(0,0,0))
 	#Add drag
 	add_force(linear_velocity * -50, Vector3(0,0,0))
+	print(throttle)
+	print(accel)
 	print(velocity)
+	
+	# Purely for fun
+	if Input.is_action_pressed("fire"):
+		$object/leftGun.emitting = true
+		$object/rightGun.emitting = true
+	
+	else:
+		$object/leftGun.emitting = false
+		$object/rightGun.emitting = false
+	
 #	print(accel)
 #	print(velocity)
 #	print(translation.y)

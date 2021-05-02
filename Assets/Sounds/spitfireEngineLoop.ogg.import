@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/spitfireEngineLoop.ogg-12cfb85b8509891cecd49599b7e55873.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/spitfireEngineLoop.ogg"
+dest_files=[ "res://.import/spitfireEngineLoop.ogg-12cfb85b8509891cecd49599b7e55873.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
