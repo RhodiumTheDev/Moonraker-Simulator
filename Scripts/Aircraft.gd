@@ -7,8 +7,8 @@ export(float, 1, 15) var THROTTLE_BIAS = 1
 
 var lifting_bodies = []
 
-var throttle = 0
-var accel = 0
+var throttle = 300
+var accel = 300
 
 var test = true
 
@@ -18,6 +18,8 @@ func _ready():
 		lifting_bodies.append(get_node(node_path))
 		get_node(node_path).set_debug_mode(DEBUG_MODE)
 	set_friction(0)
+	# Initial speed
+	linear_velocity = global_transform.basis.z * -150
 
 func _physics_process(delta):
 	var velocity = Vector3(0,0,0).distance_to(linear_velocity)
@@ -26,10 +28,9 @@ func _physics_process(delta):
 	test = true
 
 	for lifting_body in lifting_bodies:
-		# Although rotated, this is not offset
-		# Force is added by getting the force from the lifting body
-		# Rotating it based off of the orientation of the aircraft
-		# Applying it based off of the orientation of the aircraft
+		# Force is added by getting the force from the lifting body;
+		# Rotating it based off of the orientation of the aircraft;
+		# Offsetting it based off of the orientation of the aircraft
 		
 		# Get the force vector from the lifting body
 		var force = lifting_body.calculate_lift(delta, velocity, linear_velocity)
@@ -128,9 +129,9 @@ func _physics_process(delta):
 	# Change the pitch of the engine sound, between 1 and 1.8, depending on the accelaration value
 	$engine.pitch_scale = accel * 0.003  + 1
 	$object/spitfirePropSlow.rotate_z(-accel*0.1)
-	add_force(global_transform.basis.z*-accel*50, Vector3(0,0,0))
+	add_force(global_transform.basis.z*-accel*20, Vector3(0,0,0))
 	#Add drag
-	add_force(linear_velocity * -50, Vector3(0,0,0))
+	add_force(linear_velocity * -velocity * 0.001, Vector3(0,0,0))
 	print(throttle)
 	print(accel)
 	print(velocity)
